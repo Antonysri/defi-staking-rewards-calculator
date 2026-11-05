@@ -20,6 +20,7 @@ import Text2 from "../../components/text/Text2";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import { useNavigate } from "react-router-dom";
+import StakingCalculator from "../../components/StakingCalculator/StakingCalculator";
 
 const Dashboard = () => {
   const [isPublished, setIsPublished] = useState(false);
@@ -156,6 +157,21 @@ const Dashboard = () => {
           </Button>
         </Box>
         <Box sx={{ overflow: "auto", width: { sm: "100%" } }}>
+          {/* Integrated Staking Rewards Calculator */}
+          <StakingCalculator />
+
+          <Typography
+            sx={{
+              fontSize: "22px",
+              fontWeight: 700,
+              color: "#173039",
+              mb: 2,
+              mt: 1,
+            }}
+          >
+            Active Liquidity & Staking Offers
+          </Typography>
+
           <Table
             aria-label="simple table"
             sx={{
