@@ -9,7 +9,7 @@ import {
   Divider,
   Skeleton,
 } from '@mui/material';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
 import {
   StakingCalculationData,
   DurationUnit,
@@ -127,59 +127,84 @@ const StakingCalculator: React.FC = () => {
       elevation={0}
       sx={{
         borderRadius: '16px',
-        border: '2px solid #00dbe3',
-        backgroundColor: '#ffffff',
+        border: '1px solid #E2E8F0',
+        backgroundColor: '#FFFFFF',
+        boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02)',
         overflow: 'hidden',
-        boxShadow: '0 8px 30px rgba(0, 219, 227, 0.08)',
         mb: 4,
       }}
     >
-      {/* Header bar matching DeFi design */}
+      {/* Clean Top Header Bar */}
       <Box
         sx={{
-          background: 'linear-gradient(90deg, #173039 0%, #1e4552 60%, #00b4c9 100%)',
-          px: 3,
-          py: 2,
+          px: { xs: 2.5, md: 3.5 },
+          py: 2.5,
+          borderBottom: '1px solid #F1F5F9',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: 1,
+          gap: 1.5,
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <AccountBalanceIcon sx={{ color: '#00dbe3', fontSize: 28 }} />
+          <Box
+            sx={{
+              width: 38,
+              height: 38,
+              borderRadius: '10px',
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #E2E8F0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CalculateRoundedIcon sx={{ color: '#0F172A', fontSize: 22 }} />
+          </Box>
           <Box>
-            <Typography variant="h6" sx={{ color: '#ffffff', fontWeight: 700, lineHeight: 1.2 }}>
+            <Typography variant="h6" sx={{ color: '#0F172A', fontWeight: 700, fontSize: '18px', lineHeight: 1.2 }}>
               Staking Rewards Calculator
             </Typography>
-            <Typography variant="caption" sx={{ color: '#9FF1D2' }}>
-              Compound yield simulation & mathematical projection engine
+            <Typography variant="caption" sx={{ color: '#64748B', fontSize: '12px' }}>
+              Compound interest projection engine with customizable duration & frequencies
             </Typography>
           </Box>
         </Box>
 
-        <Typography
-          variant="caption"
+        <Box
           sx={{
-            backgroundColor: 'rgba(0, 219, 227, 0.15)',
-            color: '#00dbe3',
-            border: '1px solid rgba(0, 219, 227, 0.4)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 0.8,
+            backgroundColor: '#F8FAFC',
+            border: '1px solid #E2E8F0',
             px: 1.5,
             py: 0.5,
             borderRadius: '20px',
-            fontWeight: 600,
           }}
         >
-          REST API Integrated
-        </Typography>
+          <Box sx={{ width: 7, height: 7, borderRadius: '50%', backgroundColor: '#10B981' }} />
+          <Typography variant="caption" sx={{ color: '#475569', fontWeight: 600, fontSize: '11px' }}>
+            REST API Connected
+          </Typography>
+        </Box>
       </Box>
 
       <CardContent sx={{ p: { xs: 2.5, md: 3.5 } }}>
-        {/* Error Alert State */}
+        {/* Error Alert */}
         {apiError && (
-          <Alert severity="error" sx={{ mb: 3, borderRadius: '8px' }}>
-            <AlertTitle>Calculation Error</AlertTitle>
+          <Alert
+            severity="error"
+            sx={{
+              mb: 3,
+              borderRadius: '10px',
+              border: '1px solid #FECDD3',
+              backgroundColor: '#FFF1F2',
+              color: '#9F1239',
+            }}
+          >
+            <AlertTitle sx={{ fontWeight: 700 }}>Calculation Error</AlertTitle>
             {apiError}
           </Alert>
         )}
@@ -194,23 +219,23 @@ const StakingCalculator: React.FC = () => {
           onReset={handleReset}
         />
 
-        <Divider sx={{ my: 3.5, borderColor: '#e2e8f0' }} />
+        <Divider sx={{ my: 3.5, borderColor: '#F1F5F9' }} />
 
-        {/* Loading Skeleton State */}
+        {/* Loading State Skeleton */}
         {isLoading && !data && (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Skeleton variant="rectangular" height={100} sx={{ borderRadius: '12px' }} />
-            <Skeleton variant="rectangular" height={300} sx={{ borderRadius: '12px' }} />
+            <Skeleton variant="rectangular" height={280} sx={{ borderRadius: '12px' }} />
           </Box>
         )}
 
-        {/* Success Output State */}
+        {/* Results State */}
         {data && (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            {/* KPI Summary Cards */}
+            {/* Summary KPI Cards */}
             <SummaryCards data={data} />
 
-            {/* Interactive Time-series Chart */}
+            {/* Growth Curve Chart */}
             <GrowthChart
               data={data.timeSeries}
               hasUsd={Boolean(data.tokenPriceUsd && data.tokenPriceUsd > 0)}

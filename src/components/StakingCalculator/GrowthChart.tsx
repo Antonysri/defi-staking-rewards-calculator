@@ -16,46 +16,72 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { TimeSeriesPoint } from './types';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import TollIcon from '@mui/icons-material/Toll';
+import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
+import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import TollRoundedIcon from '@mui/icons-material/TollRounded';
 
 interface GrowthChartProps {
   data: TimeSeriesPoint[];
   hasUsd: boolean;
 }
 
-const CustomTooltip = ({ active, payload, label, isUsd }: any) => {
+const CustomTooltip = ({ active, payload, isUsd }: any) => {
   if (active && payload && payload.length) {
     const point: TimeSeriesPoint = payload[0].payload;
     return (
       <Paper
-        elevation={4}
+        elevation={0}
         sx={{
           padding: '12px 16px',
-          backgroundColor: 'rgba(23, 48, 57, 0.95)',
-          color: '#ffffff',
-          borderRadius: '8px',
-          border: '1px solid #00dbe3',
-          boxShadow: '0 8px 24px rgba(0, 219, 227, 0.2)',
+          backgroundColor: '#0F172A',
+          color: '#FFFFFF',
+          borderRadius: '10px',
+          border: '1px solid #334155',
+          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#00dbe3', mb: 0.5 }}>
-          {point.timeLabel} (Day {point.day})
+        <Typography
+          variant="caption"
+          sx={{
+            fontWeight: 600,
+            color: '#94A3B8',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            display: 'block',
+            mb: 0.5,
+          }}
+        >
+          {point.timeLabel} · Day {point.day}
         </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-          <Typography variant="body2" sx={{ fontSize: '13px' }}>
-            <strong>Balance:</strong>{' '}
-            {isUsd && point.balanceUsd !== undefined
-              ? `$${point.balanceUsd.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
-              : `${point.balance.toLocaleString()} TOKENS`}
-          </Typography>
-          <Typography variant="body2" sx={{ fontSize: '13px', color: '#9FF1D2' }}>
-            <strong>Rewards:</strong>{' '}
-            {isUsd && point.rewardsEarnedUsd !== undefined
-              ? `+$${point.rewardsEarnedUsd.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
-              : `+${point.rewardsEarned.toLocaleString()} TOKENS`}
-          </Typography>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+            <Typography variant="body2" sx={{ color: '#E2E8F0', fontSize: '13px' }}>
+              Balance:
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 700, color: '#38BDF8', fontSize: '13px', fontVariantNumeric: 'tabular-nums' }}
+            >
+              {isUsd && point.balanceUsd !== undefined
+                ? `$${point.balanceUsd.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                : `${point.balance.toLocaleString()} TOKENS`}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+            <Typography variant="body2" sx={{ color: '#E2E8F0', fontSize: '13px' }}>
+              Rewards:
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 700, color: '#34D399', fontSize: '13px', fontVariantNumeric: 'tabular-nums' }}
+            >
+              {isUsd && point.rewardsEarnedUsd !== undefined
+                ? `+$${point.rewardsEarnedUsd.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                : `+${point.rewardsEarned.toLocaleString()} TOKENS`}
+            </Typography>
+          </Box>
         </Box>
       </Paper>
     );
@@ -70,22 +96,47 @@ const GrowthChart: React.FC<GrowthChartProps> = ({ data, hasUsd }) => {
   const dataKey = isUsd ? 'balanceUsd' : 'balance';
 
   return (
-    <Box sx={{ width: '100%', pt: 1 }}>
+    <Box
+      sx={{
+        width: '100%',
+        p: '20px',
+        borderRadius: '14px',
+        border: '1px solid #E2E8F0',
+        backgroundColor: '#FFFFFF',
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          mb: 2,
+          mb: 2.5,
           flexWrap: 'wrap',
-          gap: 1,
+          gap: 1.5,
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <ShowChartIcon sx={{ color: '#00dbe3', fontSize: 24 }} />
-          <Typography variant="h6" sx={{ fontWeight: 700, color: '#173039' }}>
-            Projected Growth Curve
-          </Typography>
+          <Box
+            sx={{
+              width: 32,
+              height: 32,
+              borderRadius: '8px',
+              backgroundColor: '#EFF6FF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ShowChartRoundedIcon sx={{ color: '#2563EB', fontSize: 18 }} />
+          </Box>
+          <Box>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+              Projected Growth Trajectory
+            </Typography>
+            <Typography variant="caption" sx={{ color: '#64748B' }}>
+              Compound yield simulation over duration
+            </Typography>
+          </Box>
         </Box>
 
         {hasUsd && (
@@ -95,54 +146,62 @@ const GrowthChart: React.FC<GrowthChartProps> = ({ data, hasUsd }) => {
             exclusive
             onChange={(_, val) => val && setViewMode(val)}
             sx={{
-              backgroundColor: '#f4f6f8',
-              borderRadius: '6px',
+              backgroundColor: '#F1F5F9',
+              borderRadius: '8px',
+              p: '2px',
+              border: 'none',
               '& .MuiToggleButton-root': {
+                border: 'none',
                 textTransform: 'none',
                 fontWeight: 600,
                 fontSize: '12px',
-                py: 0.5,
-                px: 1.5,
+                py: '4px',
+                px: '12px',
+                borderRadius: '6px',
+                color: '#64748B',
                 '&.Mui-selected': {
-                  backgroundColor: '#00dbe3',
-                  color: '#173039',
-                  '&:hover': { backgroundColor: '#00b4c9' },
+                  backgroundColor: '#FFFFFF',
+                  color: '#0F172A',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+                  '&:hover': { backgroundColor: '#FFFFFF' },
                 },
               },
             }}
           >
             <ToggleButton value="tokens">
-              <TollIcon sx={{ fontSize: 16, mr: 0.5 }} /> Token Balance
+              <TollRoundedIcon sx={{ fontSize: 15, mr: 0.5 }} /> Tokens
             </ToggleButton>
             <ToggleButton value="usd">
-              <AttachMoneyIcon sx={{ fontSize: 16, mr: 0.5 }} /> USD Value
+              <AttachMoneyRoundedIcon sx={{ fontSize: 15, mr: 0.5 }} /> USD Value
             </ToggleButton>
           </ToggleButtonGroup>
         )}
       </Box>
 
-      <Box sx={{ width: '100%', height: 320 }}>
+      <Box sx={{ width: '100%', height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>
-              <linearGradient id="balanceGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#00dbe3" stopOpacity={0.7} />
-                <stop offset="95%" stopColor="#00b4c9" stopOpacity={0.05} />
+              <linearGradient id="fintechGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#0284C7" stopOpacity={0.18} />
+                <stop offset="100%" stopColor="#0284C7" stopOpacity={0.0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
             <XAxis
               dataKey="timeLabel"
-              stroke="#6b7280"
-              fontSize={12}
+              stroke="#94A3B8"
+              fontSize={11}
+              fontWeight={500}
               tickLine={false}
-              axisLine={{ stroke: '#e0e0e0' }}
+              axisLine={{ stroke: '#E2E8F0' }}
             />
             <YAxis
-              stroke="#6b7280"
-              fontSize={12}
+              stroke="#94A3B8"
+              fontSize={11}
+              fontWeight={500}
               tickLine={false}
-              axisLine={{ stroke: '#e0e0e0' }}
+              axisLine={{ stroke: '#E2E8F0' }}
               tickFormatter={(value) =>
                 isUsd ? `$${value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value}` : value
               }
@@ -151,11 +210,11 @@ const GrowthChart: React.FC<GrowthChartProps> = ({ data, hasUsd }) => {
             <Area
               type="monotone"
               dataKey={dataKey}
-              stroke="#00b4c9"
-              strokeWidth={3}
+              stroke="#0284C7"
+              strokeWidth={2.5}
               fillOpacity={1}
-              fill="url(#balanceGradient)"
-              animationDuration={800}
+              fill="url(#fintechGradient)"
+              animationDuration={600}
             />
           </AreaChart>
         </ResponsiveContainer>
